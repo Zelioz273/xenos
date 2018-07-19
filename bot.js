@@ -8,7 +8,7 @@ client.commands = new Discord.Collection();
 
 const cooldowns = new Discord.Collection();
 
-for (const file of commandFiles) {
+for (const file of commandFile) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
 }
