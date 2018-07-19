@@ -34,13 +34,16 @@ client.on("message", message => {
   } catch (err) {
     console.error(err);
 
-    if (command.args && !args.length) {
+      if (command.args && !args.length) {
      let reply = `${command.argsMessage}`;
 
         if (command.usage) {
            reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
         }
+		
+        return message.channel.send(reply);
     }
+
   }
 });
 
