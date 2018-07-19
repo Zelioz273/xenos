@@ -25,7 +25,7 @@ client.on("message", message => {
   
 		
         return message.channel.send(reply);
-    }
+    
 
   // The list of if/else is replaced with those simple 2 lines:
   try {
