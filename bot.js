@@ -4,6 +4,12 @@ const fs = require("fs");
 
 const { prefix, token } = require("./config.json");
 client.commands = new Discord.Collection();
+const commandFile = require(`./Commands/${file}`);
+
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
+}
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
@@ -23,11 +29,14 @@ client.on("message", message => {
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const commandName = args.shift().toLowerCase();
 
-  if (!client.commands.has(commandName)) return;
-	client.commands.set(command.name, command);
-	const command = client.commands.get(commandName);
-	
-	 if (command.args && !args.length) {
+    if (!client.commands.has(commandName)) return;
+
+ const command = client.commands.get(commandName);
+ 
+ if (command.serverOnly && message.channel.type !== 'text') {
+    return message.reply('I can\'t execute that command inside DMs!');
+}
+  if (command.args && !args.length) {
      let reply = `${command.argsMessage}`;
 
         if (command.usage) {
@@ -35,10 +44,11 @@ client.on("message", message => {
         }
 		
         return message.channel.send(reply);
-    }		
+    }
+	
 	
   try {
-    let commandFile = require(`./Commands/${commandName}.js`);
+    
     commandFile.execute(message, args);
 	  
   }
