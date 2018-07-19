@@ -23,20 +23,12 @@ client.on("message", message => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 	
-	  if (command.args && !args.length) {
-     let reply = `${command.argsMessage}`;
-
-        if (command.usage) {
-           reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
-        }
-	      return message.channel.send(reply);
-    }
 
   // The list of if/else is replaced with those simple 2 lines:
   try {
     let commandFile = require(`./Commands/${command}.js`);
     commandFile.execute(message, args);
-	  message.channel.send(reply);
+	  
   }
 	catch (err) {
     console.error(err);
