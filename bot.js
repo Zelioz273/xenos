@@ -4,15 +4,6 @@ const fs = require("fs");
 
 const { prefix, token } = require("./config.json");
 
-client.commands = new Discord.Collection();
-
-const cooldowns = new Discord.Collection();
-
-
-    const command = require(`./commands/${file}`);
-    client.commands.set(command.name, command);
-
-
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
   if (err) return console.error(err);
@@ -24,66 +15,21 @@ fs.readdir("./events/", (err, files) => {
   });
 });
 
-client.on('message', message => {
+client.on("message", message => {
+  if (message.author.bot) return;
+  if(message.content.indexOf(prefix) !== 0) return;
 
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
+  // This is the best way to define args. Trust me.
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
 
-	const args = message.content.slice(prefix.length).split(/ +/);
-	const commandName = args.shift().toLowerCase();
-	
-	
-
-
-     //commands
-  if (!client.commands.has(commandName)) return;
-
- const command = client.commands.get(commandName);
- 
- if (command.serverOnly && message.channel.type !== 'text') {
-    return message.reply('I can\'t execute that command inside DMs!');
-}
-  if (command.args && !args.length) {
-     let reply = `${command.argsMessage}`;
-
-        if (command.usage) {
-           reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
-        }
-		
-        return message.channel.send(reply);
-    }
-
-	
-
-
-	if (!cooldowns.has(command.name)) {
-		cooldowns.set(command.name, new Discord.Collection());
-	}
-
-	const now = Date.now();
-	const timestamps = cooldowns.get(command.name);
-	const cooldownAmount = (command.cooldown || 3) * 1000;
-
-	if (!timestamps.has(message.author.id)) {
-		timestamps.set(message.author.id, now);
-		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-	}
-
-	else {
-		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-		if (now < expirationTime) {
-			const timeLeft = (expirationTime - now) / 1000
-			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
-		}
-		timestamps.set(message.author.id, now);
-		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-	}
+  // The list of if/else is replaced with those simple 2 lines:
   try {
     let commandFile = require(`./commands/${command}.js`);
-    commandFile.execute(message, args);
+    commandFile.execute(client, message, args);
   } catch (err) {
     console.error(err);
   }
 });
 
-client.login(token)
+client.login(token);
