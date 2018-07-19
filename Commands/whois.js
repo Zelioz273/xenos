@@ -13,7 +13,7 @@ module.exports = {
 	
 	usage: '(user mention)',
 	
-	argsMessage: 'You state anyone to give infomation on.',
+	argsMessage: 'You didnt state anyone to give infomation on.',
 	
 	execute(message, args) {
 			const taggeduser = message.mentions.users.first();
