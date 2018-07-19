@@ -23,12 +23,6 @@ client.on("message", message => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   
-    if (command.args && !args.length) {
-     let reply = `${command.argsMessage}`;
-
-        if (command.usage) {
-           reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
-        }
 		
         return message.channel.send(reply);
     }
@@ -39,6 +33,13 @@ client.on("message", message => {
     commandFile.execute(message, args);
   } catch (err) {
     console.error(err);
+
+    if (command.args && !args.length) {
+     let reply = `${command.argsMessage}`;
+
+        if (command.usage) {
+           reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+        }
   }
 });
 
