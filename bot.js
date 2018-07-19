@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+ const Discord = require("discord.js");
 const client = new Discord.Client();
 const fs = require("fs");
 
@@ -22,9 +22,9 @@ client.on("message", message => {
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const commandName = args.shift().toLowerCase();
-	client.commands.set(command.name, command);
 	
   if (!client.commands.has(commandName)) return;
+	client.commands.set(command.name, command);
 	const command = client.commands.get(commandName);
 	
 	 if (command.args && !args.length) {
