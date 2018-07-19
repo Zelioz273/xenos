@@ -3,6 +3,7 @@ const client = new Discord.Client();
 const fs = require("fs");
 
 const config = require("./config.json");
+client.commands = new Discord.Collection();
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
@@ -16,15 +17,26 @@ fs.readdir("./events/", (err, files) => {
 });
 
 client.on("message", message => {
-  if (message.author.bot) return;
-  if(message.content.indexOf(config.prefix) !== 0) return;
+ if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-  // This is the best way to define args. Trust me.
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
+  const commandName = args.shift().toLowerCase();
 	
+  if (!client.commands.has(commandName)) return;
+	const command = client.commands.get(commandName);
+	
+	 if (command.args && !args.length) {
+     let reply = `${command.argsMessage}`;
 
-  // The list of if/else is replaced with those simple 2 lines:
+        if (command.usage) {
+           reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+        }
+		
+        return message.channel.send(reply);
+    }
+
+	
+	
   try {
     let commandFile = require(`./Commands/${command}.js`);
     commandFile.execute(message, args);
