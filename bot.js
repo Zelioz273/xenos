@@ -4,6 +4,7 @@ const fs = require("fs");
 
 const { prefix, token } = require("./config.json");
 client.commands = new Discord.Collection();
+client.commands.set(command.name, command);
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
