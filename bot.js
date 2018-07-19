@@ -1,21 +1,18 @@
-const fs = require('fs');
-const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
-
+const Discord = require("discord.js");
 const client = new Discord.Client();
-client.commands = new Discord.Collection();
+const fs = require("fs");
 
-const cooldowns = new Discord.Collection();
+const config = require("./config.json");
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    client.commands.set(command.name, command);
-}
-
-client.on('ready', () => {
-    console.log('Bot is online!');
+// This loop reads the /events/ folder and attaches each event file to the appropriate event.
+fs.readdir("./events/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    let eventFunction = require(`./events/${file}`);
+    let eventName = file.split(".")[0];
+    // super-secret recipe to call events with all their proper arguments *after* the `client` var.
+    client.on(eventName, (...args) => eventFunction.run(client, ...args));
+  });
 });
 
 client.on('message', message => {
@@ -72,17 +69,12 @@ client.on('message', message => {
 		timestamps.set(message.author.id, now);
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 	}
-
-	try {
-		 command.execute(message, args);
-	}
-
-	catch (error) {
-		console.error(error);
-		message.reply('there was an error trying to execute that command!');
-		}	
+  try {
+    let commandFile = require(`./commands/${command}.js`);
+    commandFile.execute(message, args);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
-
-//login
-client.login(token);
+client.login(config.token)
