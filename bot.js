@@ -36,10 +36,10 @@ client.on("message", message => {
   try {
     let commandFile = require(`./Commands/${command}.js`);
     commandFile.execute(message, args);
+	  message.channel.send(reply);
   }
 	catch (err) {
     console.error(err);
-message.channel.send(reply);
 });
 
 client.login(config.token);
