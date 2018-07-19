@@ -19,7 +19,7 @@ fs.readdir("./events/", (err, files) => {
 client.on("message", message => {
  if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-  const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const commandName = args.shift().toLowerCase();
 	
   if (!client.commands.has(commandName)) return;
