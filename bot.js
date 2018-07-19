@@ -21,7 +21,7 @@ client.on("message", message => {
   if(message.content.indexOf(prefix) !== 0) return;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
+  const commandName = args.shift().toLowerCase();
 
   if (!client.commands.has(commandName)) return;
 	client.commands.set(command.name, command);
