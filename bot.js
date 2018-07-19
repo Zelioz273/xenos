@@ -3,7 +3,6 @@ const client = new Discord.Client();
 const fs = require("fs");
 
 const { prefix, token } = require("./config.json");
-client.commands = new Discord.Collection();
 
 
 
@@ -23,7 +22,7 @@ client.on("message", message => {
   if(message.content.indexOf(prefix) !== 0) return;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
-  const commandName = args.shift().toLowerCase();
+  const command = args.shift().toLowerCase();
 	
 
 
