@@ -4,7 +4,7 @@ const fs = require("fs");
 
 const { prefix, token } = require("./config.json");
 client.commands = new Discord.Collection();
-client.commands.set(command.name, command);
+
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
@@ -22,6 +22,7 @@ client.on("message", message => {
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const commandName = args.shift().toLowerCase();
+	client.commands.set(command.name, command);
 	
   if (!client.commands.has(commandName)) return;
 	const command = client.commands.get(commandName);
