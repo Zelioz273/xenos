@@ -46,6 +46,7 @@ client.on("message", message => {
   }
 	catch (err) {
     console.error(err);
+		message.reply('There was an error trying to execute that command!');
 	}
 });
 
