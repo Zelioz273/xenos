@@ -30,8 +30,6 @@ client.on("message", message => {
         if (command.usage) {
            reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
         }
-		
-        return message.channel.send(reply);
     }	
  
     
