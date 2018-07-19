@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const fs = require("fs");
 
-const { prefix, token } = require("./config.json");
+const config = require("./config.json");
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
@@ -17,19 +17,19 @@ fs.readdir("./events/", (err, files) => {
 
 client.on("message", message => {
   if (message.author.bot) return;
-  if(message.content.indexOf(prefix) !== 0) return;
+  if(message.content.indexOf(config.prefix) !== 0) return;
 
   // This is the best way to define args. Trust me.
-  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
   // The list of if/else is replaced with those simple 2 lines:
   try {
-    let commandFile = require(`./commands/${command}.js`);
-    commandFile.execute(client, message, args);
+    let commandFile = require(`./Commands/${command}.js`);
+    commandFile.run(message, args);
   } catch (err) {
     console.error(err);
   }
 });
 
-client.login(token);
+client.login(config.token);
