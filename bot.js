@@ -43,7 +43,7 @@ client.on("message", message => {
   }
 	catch (err) {
     console.error(err);
-  message.reply('there was an error trying to execute that command!');
+  message.channel.send(reply);
   }
 });
 
