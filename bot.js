@@ -41,7 +41,7 @@ client.on("message", message => {
 	
 	
   try {
-    let commandFile = require(`./Commands/${command}.js`);
+    let commandFile = require(`./CommandFolder/${command}.js`);
     commandFile.execute(message, args);
 	  
   }
