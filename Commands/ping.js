@@ -1,4 +1,4 @@
-exports.run = {
+module.exports = {
 	
     name: 'ping',
 	
