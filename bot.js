@@ -23,17 +23,7 @@ client.on("message", message => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   
-		
- 
-    
-
-  // The list of if/else is replaced with those simple 2 lines:
-  try {
-    let commandFile = require(`./Commands/${command}.js`);
-    commandFile.execute(message, args);
-  } catch (err) {
-    console.error(err);
-
+	
       if (command.args && !args.length) {
      let reply = `${command.argsMessage}`;
 
@@ -42,8 +32,18 @@ client.on("message", message => {
         }
 		
         return message.channel.send(reply);
-    }
+    }	
+ 
+    
 
+  // The list of if/else is replaced with those simple 2 lines:
+  try {
+    let commandFile = require(`./Commands/${command}.js`);
+    commandFile.execute(message, args);
+  }
+	catch (err) {
+    console.error(err);
+  message.reply('there was an error trying to execute that command!');
   }
 });
 
