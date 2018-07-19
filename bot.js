@@ -24,7 +24,7 @@ client.on("message", message => {
   const command = args.shift().toLowerCase();
   
 		
-        return message.channel.send(reply);
+ 
     
 
   // The list of if/else is replaced with those simple 2 lines:
