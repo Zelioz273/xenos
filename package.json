@@ -1,0 +1,19 @@
+{
+  "name": "xenos",
+  "version": "1.0.0",
+  "description": "First bot for my game dev server.",
+  "main": "bot.js",
+  "scripts": {
+    "test": "ping"
+  },
+  "repository": {
+    "type": "git",
+    "url": "init"
+  },
+  "author": "Zelioz273",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "eslint": "^5.1.0"
+  }
+}
